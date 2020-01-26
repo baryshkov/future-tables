@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { InputGroup, InputGroupAddon, Button, Input } from 'reactstrap';
+import './SearchField.css';
 
 const SearchField = ({ setGlobalFilter, gotoPage }) => {
   const [searchString, setSearchString] = useState('');
   return (
     <form className="search-field">
-      <span>
-        Поиск:{' '}
-        <input
+      <InputGroup>
+        <Input
           type="text"
           value={searchString}
           onChange={e => {
             setSearchString(e.target.value);
           }}
-          placeholder="lol"
+          placeholder="Искать по таблице"
         />
-      </span>
-      <button
-        type="submit"
-        className="search-field__button"
-        onClick={event => {
-          event.preventDefault();
-          setGlobalFilter(searchString);
-          gotoPage(0);
-        }}
-      >
-        Найти
-      </button>
+        <InputGroupAddon addonType="append">
+          <Button
+            type="submit"
+            onClick={event => {
+              event.preventDefault();
+              setGlobalFilter(searchString);
+              gotoPage(0);
+            }}
+            color="primary"
+          >
+            Поиск
+          </Button>
+        </InputGroupAddon>
+      </InputGroup>
     </form>
   );
 };

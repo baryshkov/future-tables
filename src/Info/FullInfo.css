@@ -1,0 +1,7 @@
+.full-info {
+  width: 700px;
+  text-align: left;
+  display: flex;
+  flex-flow: column;
+  align-content: space-between;
+}
