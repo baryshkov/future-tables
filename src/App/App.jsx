@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { Container, Button, Alert } from 'reactstrap';
-import ApiService from './fetcher/apiService';
+import ApiService from '../fetcher/apiService';
 import './App.css';
-import Table from './Table';
-import FullInfo from './Info';
-import Spinner from './Spinner';
-import AddRow from './AddRow';
+import Table from '../Table';
+import FullInfo from '../Info';
+import Spinner from '../Spinner';
+import AddRow from '../AddRow';
 
 const TABLE_SCHEMA = [
   {
