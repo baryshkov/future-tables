@@ -28,6 +28,7 @@
     "rules": {
         "prettier/prettier": "error",
         "max-len": ["error", 100, 2, { "ignoreUrls": true }],
-        "react/state-in-constructor": "off"
+        "react/state-in-constructor": "off",
+        "react/jsx-props-no-spreading": "off"
     }
 }

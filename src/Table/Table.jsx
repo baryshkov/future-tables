@@ -41,6 +41,14 @@ const Table = ({ data, columns, expandInfo }) => {
     );
   }
 
+  const isSorted = column => {
+    if (column.isSorted) {
+      if (column.isSortedDesc) return '▼';
+      return '▲';
+    }
+    return '';
+  };
+
   return (
     <>
       <SearchField setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} />
@@ -50,9 +58,9 @@ const Table = ({ data, columns, expandInfo }) => {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  <button className="btn-header">
+                  <button className="btn-header" type="button">
                     {column.render('Header')}
-                    <span>{column.isSorted ? (column.isSortedDesc ? '▼' : '▲') : ''}</span>
+                    <span>{isSorted(column)}</span>
                   </button>
                 </th>
               ))}
@@ -69,7 +77,6 @@ const Table = ({ data, columns, expandInfo }) => {
                 onClick={() => {
                   expandInfo(row.original);
                   setSelectedRowId(row.id);
-                  console.log(row);
                 }}
               >
                 {row.cells.map(cell => {
