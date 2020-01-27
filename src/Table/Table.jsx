@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, useSortBy, usePagination, useGlobalFilter } from 'react-table';
 import { Table as TableElement, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
@@ -7,6 +7,7 @@ import './Table.css';
 import SearchField from '../SearchField';
 
 const Table = ({ data, columns, expandInfo }) => {
+  const [selectedRowId, setSelectedRowId] = useState(null);
   const {
     getTableProps,
     getTableBodyProps,
@@ -28,14 +29,12 @@ const Table = ({ data, columns, expandInfo }) => {
     usePagination,
   );
 
-  // TODO: onClick highlight displayed row;
-
   const buttons = [];
 
   for (let i = 0; i < pageCount; i += 1) {
     buttons.push(
-      <PaginationItem key={i + 777} active={i === pageIndex}>
-        <PaginationLink key={i + 777} onClick={() => gotoPage(i)}>
+      <PaginationItem key={i} active={i === pageIndex}>
+        <PaginationLink key={i} onClick={() => gotoPage(i)}>
           {i + 1}
         </PaginationLink>
       </PaginationItem>,
@@ -64,7 +63,15 @@ const Table = ({ data, columns, expandInfo }) => {
           {page.map(row => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()} onClick={() => expandInfo(row.original)}>
+              <tr
+                {...row.getRowProps()}
+                className={selectedRowId === row.id ? 'tr-clicked' : null}
+                onClick={() => {
+                  expandInfo(row.original);
+                  setSelectedRowId(row.id);
+                  console.log(row);
+                }}
+              >
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
                 })}

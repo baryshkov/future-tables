@@ -3,6 +3,8 @@ import { Col, Row, Button, Form, FormGroup, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 const AddRow = ({ addRow }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const [newRow, setNewRow] = useState({
     id: '',
     firstName: '',
@@ -17,7 +19,6 @@ const AddRow = ({ addRow }) => {
       zip: 'Unknown',
     },
   });
-  const [notEmpty, setNotEmpty] = useState(false);
 
   const updateState = (name, value) => {
     setNewRow({ ...newRow, [name]: value });
@@ -25,7 +26,7 @@ const AddRow = ({ addRow }) => {
 
   const validate = useCallback(() => {
     const validation = Object.values(newRow).every(elem => elem !== '');
-    setNotEmpty(validation);
+    setIsValid(validation);
   }, [newRow]);
 
   const handleInputChange = e => {
@@ -41,6 +42,13 @@ const AddRow = ({ addRow }) => {
   useEffect(() => {
     validate();
   }, [newRow, validate]);
+
+  if (!isVisible)
+    return (
+      <Button color="info" onClick={() => setIsVisible(true)}>
+        Добавить
+      </Button>
+    );
 
   return (
     <Form onSubmit={onSubmit}>
@@ -81,7 +89,7 @@ const AddRow = ({ addRow }) => {
           </FormGroup>
         </Col>
         <Col md={3}>
-          <Button disabled={!notEmpty}>Добавить в таблицу</Button>
+          <Button disabled={!isValid}>Добавить в таблицу</Button>
         </Col>
       </Row>
     </Form>

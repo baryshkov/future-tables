@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './FullInfo.css';
 import { Table as TableElement } from 'reactstrap';
 
 const FullInfo = ({ contact }) => {

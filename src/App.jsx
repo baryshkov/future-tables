@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useEffect, useState } from 'react';
-import { Container, Button } from 'reactstrap';
+import { Container, Button, Alert } from 'reactstrap';
 import ApiService from './fetcher/apiService';
 import './App.css';
 import Table from './Table';
@@ -35,6 +35,7 @@ const TABLE_SCHEMA = [
 const App = () => {
   const [dataAmout, setDataAmout] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const [tableData, setTableData] = useState(null);
   const [expandedInfo, setExpandedInfo] = useState(null);
@@ -42,14 +43,14 @@ const App = () => {
   const apiService = new ApiService();
 
   const fetchData = async fetcher => {
+    setIsError(false);
     setIsLoading(true);
     setExpandedInfo(null);
     try {
       const { data } = await fetcher();
       setTableData(data);
     } catch (error) {
-      // TODO: here should be good error handling
-      console.error(error);
+      setIsError(true);
     }
     setIsLoading(false);
   };
@@ -65,6 +66,12 @@ const App = () => {
   const addRow = data => {
     setTableData([data, ...tableData]);
   };
+
+  const errorMessage = (
+    <Alert className="error" color="danger">
+      Something went wrong... Try fetching again.
+    </Alert>
+  );
 
   return (
     <Container fluid="lg">
@@ -86,6 +93,7 @@ const App = () => {
       </Button>
       {tableData && !isLoading && <AddRow addRow={data => addRow(data)} />}
       {(isLoading && <Spinner />) ||
+        (isError && errorMessage) ||
         (tableData && (
           <Table data={tableData} columns={TABLE_SCHEMA} expandInfo={setExpandedInfo} />
         ))}
